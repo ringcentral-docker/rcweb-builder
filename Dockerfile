@@ -8,6 +8,7 @@ ENV NODE_VERSION=8.x
 # Install Dependent and Nodejs
 #======================================
 RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" | bash - \
+  && yum update -y \
   && yum -y install nodejs gcc-c++ make wget unzip git ant ruby-devel rubygems rpm-build \
   && gem install compass \
   && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
@@ -21,5 +22,6 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 
 RUN node --version \
     && npm version \
+    && yarn --version \
     && compass version \
     && grunt version
