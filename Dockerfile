@@ -9,10 +9,11 @@ ENV RUBY_VERSION=2.6
 # Install Dependent and Nodejs
 #======================================
 RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" | bash - \
+  && curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo \
   && yum makecache \
   && yum update -y \
   && yum install -y \
-    nodejs gcc-c++ make wget unzip git ant rpm-build \
+    nodejs gcc-c++ make wget unzip git ant rpm-build yarn \
   && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
   && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
   && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
