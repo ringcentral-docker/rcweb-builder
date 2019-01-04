@@ -25,13 +25,13 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 # Install Dependent Ruby
 #======================================
 RUN yum makecache \
-  && yum -y update \
+  && yum update -y \
   && yum install -y \
     which patch readline readline-devel zlib zlib-devel \
     libyaml-devel libffi-devel openssl-devel bzip2 autoconf \
     automake libtool bison iconv-devel sqlite-devel \
-  && curl -sSL https://rvm.io/mpapis.asc | gpg --import - \
-  && curl -L get.rvm.io | bash -s stable \
+  && gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
+  && curl -sSL https://get.rvm.io | bash -s stable \
   && npm cache verify \
   && yum clean all
 
@@ -42,10 +42,14 @@ RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc"
 RUN /bin/bash -l -c "gem install compass"
 
 #======================================
-# Install Version
+# Show Version
 #======================================
 RUN node --version \
     && npm version \
     && yarn --version \
     && compass version \
-    && grunt version
+    && grunt version \
+    && ruby --version \
+    && rvm --version \
+    && bundle --version \
+    && gem --version
