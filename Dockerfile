@@ -38,7 +38,7 @@ RUN yum makecache \
 RUN /bin/bash -l -c "rvm requirements"
 RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
 RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
-RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc"
+RUN /bin/bash -l -c "gem install bundler"
 RUN /bin/bash -l -c "gem install compass"
 
 #======================================
