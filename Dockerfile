@@ -30,7 +30,7 @@ RUN yum makecache \
     which patch readline readline-devel zlib zlib-devel \
     libyaml-devel libffi-devel openssl-devel bzip2 autoconf \
     automake libtool bison iconv-devel sqlite-devel \
-  && gpg2 --keyserver gpg.mit.edu --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
+  && gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
   && curl -sSL https://get.rvm.io | bash -s stable \
   && npm cache verify \
   && yum clean all
