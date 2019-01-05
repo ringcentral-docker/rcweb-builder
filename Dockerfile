@@ -59,7 +59,6 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 #RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
 #RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
 RUN gem update --system
-RUN gem install bundler
 RUN gem install compass
 
 #======================================
