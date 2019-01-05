@@ -2,7 +2,7 @@ FROM centos:centos7
 LABEL maintainer="john.lin@ringcentral.com"
 
 ENV DEV_MODE=true
-ENV NODE_VERSION=8.x
+ENV NODE_VERSION=10.x
 ENV RUBY_VERSION=2.6
 
 #======================================
@@ -39,18 +39,24 @@ RUN yum makecache \
 RUN /bin/bash -l -c "rvm requirements"
 RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
 RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
-RUN /bin/bash -l -c "rvm @global do gem install bundler"
-RUN /bin/bash -l -c "rvm @global do gem install compass"
+RUN /bin/bash -l -c "gem install bundler"
+RUN /bin/bash -l -c "gem install compass"
 
 #======================================
 # Show Version
 #======================================
-RUN node --version
-RUN npm version
-RUN yarn --version
-RUN compass version
-RUN grunt --version
-RUN ruby --version
-RUN rvm --version
-RUN bundle --version
-RUN gem --version
+RUN /bin/bash -l -c "node --version"
+RUN /bin/bash -l -c "npm version"
+RUN /bin/bash -l -c "yarn --version"
+RUN /bin/bash -l -c "which compass"
+RUN /bin/bash -l -c "compass version"
+RUN /bin/bash -l -c "which grunt"
+RUN /bin/bash -l -c "grunt --version"
+RUN /bin/bash -l -c "which ruby"
+RUN /bin/bash -l -c "ruby --version"
+RUN /bin/bash -l -c "which rvm"
+RUN /bin/bash -l -c "rvm --version"
+RUN /bin/bash -l -c "which bundle"
+RUN /bin/bash -l -c "bundle --version"
+RUN /bin/bash -l -c "which gem"
+RUN /bin/bash -l -c "gem --version"
