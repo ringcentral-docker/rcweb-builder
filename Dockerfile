@@ -32,6 +32,7 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
   && yum update -y \
   && yum install -y \
     nodejs gcc-c++ make wget unzip git ant rpm-build yarn \
+  && yum groupinstall "Development Tools" -y \
   && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
   && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
   && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
