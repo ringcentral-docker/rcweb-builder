@@ -8,7 +8,7 @@ ARG RUBY_VERSION
 RUN yum makecache \
   && yum update -y \
   && yum install -y \
-    git bzip2 \
+    git bzip2 openssl-devel readline-devel zlib-devel \
   && yum groupinstall "Development Tools" -y \
   && yum clean all
 RUN git clone https://github.com/rbenv/ruby-build.git $RUBY_PATH/plugins/ruby-build \
@@ -31,7 +31,7 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
   && yum makecache \
   && yum update -y \
   && yum install -y \
-    epel-release nodejs gcc-c++ make wget unzip git ant rpm-build yarn \
+    nodejs gcc-c++ make wget unzip git ant rpm-build yarn \
   && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
   && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
   && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
