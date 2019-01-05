@@ -36,11 +36,11 @@ RUN yum makecache \
   && npm cache verify \
   && yum clean all
 
-RUN /bin/bash -l -c "rvm requirements"
-RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
-RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
-RUN /bin/bash -l -c "gem install bundler"
-RUN /bin/bash -l -c "gem install compass"
+RUN rvm requirements
+RUN rvm install "${RUBY_VERSION}"
+RUN rvm use "${RUBY_VERSION}" --default
+RUN gem install bundler
+RUN gem install compass
 
 #======================================
 # Show Version
@@ -48,8 +48,8 @@ RUN /bin/bash -l -c "gem install compass"
 RUN node --version \
     && npm version \
     && yarn --version \
-#    && compass version \
-    && grunt version \
+#    && compass --version \
+    && grunt --version \
     && ruby --version \
     && rvm --version \
     && bundle --version \
