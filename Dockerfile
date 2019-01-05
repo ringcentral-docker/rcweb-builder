@@ -4,11 +4,13 @@ LABEL maintainer="john.lin@ringcentral.com"
 ENV DEV_MODE=true
 ENV NODE_VERSION=8.x
 ENV RUBY_VERSION=2.6
+ENV SHELL="/bin/bash"
 
-# Vertica requires bash as default shell
-ENV SHELL "/bin/bash"
+#======================================
+# Set bash as default shell
+#======================================
+RUN ["${SHELL}", "-c", "cmd"]
 
-RUN chsh -s "${SHELL}"
 #======================================
 # Install Dependent and Nodejs
 #======================================
@@ -52,7 +54,7 @@ RUN gem install compass
 RUN node --version \
     && npm version \
     && yarn --version \
-#    && compass --version \
+    && compass --version \
     && grunt --version \
     && ruby --version \
     && rvm --version \
