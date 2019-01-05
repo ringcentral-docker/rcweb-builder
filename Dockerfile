@@ -1,11 +1,12 @@
 ARG RUBY_PATH=/usr/local
 ARG RUBY_VERSION=2.6.0
-ARG NODE_VERSION=10.x
+ARG NODE_VERSION=8.x
+ARG CENTOS_VERSION=7
 
 #======================================
 # build Ruby
 #======================================
-FROM centos:centos7 AS rubybuild
+FROM centos:7 AS rubybuild
 ARG RUBY_PATH
 ARG RUBY_VERSION
 RUN yum makecache \
@@ -18,7 +19,7 @@ RUN git clone https://github.com/rbenv/ruby-build.git $RUBY_PATH/plugins/ruby-bu
 &&  $RUBY_PATH/plugins/ruby-build/install.sh
 RUN ruby-build $RUBY_VERSION $RUBY_PATH
 
-FROM centos:centos7
+FROM centos:7
 LABEL maintainer="john.lin@ringcentral.com"
 ARG RUBY_PATH
 ARG NODE_VERSION

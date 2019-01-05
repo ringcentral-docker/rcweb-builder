@@ -8,8 +8,9 @@ env:
   - secure: PV9kNl0RZWSUBL6lwBp/CmIl8R4jCle5Xb4/epB9D3ZbOHzc7A022dUyqLz4y0HmZQgoY+NoC0eHUPSqE71e3iKDA8cwrSY+F6i6QhwYSRiAznecaf3UQ4ZMrmylxTodFqdrmvNEzK/URPuSRFvtpY7pBzqQjmS08cPdGYK93GGimSY0oXQPG2cr3kMr28tM50jcSE9cFVudw6DxZDUV0DhNCxPRs8HrecFenBPvEoZoJjtUaE9D1YlVqixMSIRjxCcIIahBrmuqAikNLmQGdDQrwllMiar+SLcyA3SKWJwTyiSZeGBiJ90nNm1CZU3PQXQQEsZh/M0H6XUnmPb1tuMbi1iZXi+z4yTz3iuhbCswkMueL63mesM9S899Hc8oNsV3I3T9ampGzRXohzwFt4ziPAnRXmXPMqWw4SaiACuII+PGIkZcIYB3+GevQJdWpBbEt1x1MnS18HOAYpdQdOQd/CmstvhoM8PL5vSP77a4Vgcn4iZMyYT9M04YV6h3gxKKph3GHFDxS+7E8USl+yE7ChHwrzPa2qnGYFkHkJZTKhEjJpGTOjJE5voCNpIiIQ4xtPzeOQVMZ3AhGYE7/4vNg8MnD/gngTeF7r1Pi8thJ97AnmfkrsrxDY6AGUQ234GvV/M6Z8TVgObes1TKps+hzOdeds/hej3v0/J/JqU=
   - secure: msTKGL2DdeO5uq96RXD6GphEimd/gt4X7KHt5KbLBewaOqH/mB8PGT1m9LBeq4HdhZF5/ve+lDyFDghNw2o+51r7v5aWCLu4hn3YnagW8c1AuZIIZ+ITBBT/8+pp0ydD2/XY3Fa9kfNcq2w0xS8SmT8qRgScDPrUkdDcNf9rK2NVMkSmZHWanlnh/go2fPLWQ8HlTXwRbxozCy4N04np0iJdrRkqufQn8SZXl1cvcv+tbXDNrQNtBreUhM3dq8oZvYo1WEG9yMfFJJ4vlTifPenaY5qTQ7VXZYkHxidSLvnguKFZ6oOBVhTnqjzfQtGVJPGrW2Xy47gVvpi8ijGRpqm2RNb6A/THUnz1/iumC33rEJP3NQWBkRwZcRD7KcwgfnKYYNA9WAo0drpxhmKVK0BvsiZYok7o+AcyCEEgeIZuLM4qWWxd8wj1sVMcD329n+kGN6NcegQWYY7CqljlTSJtbHzgo2eIQrA9gTM7QBlKeFG9+lmMtH43l5kLIU+bMR9x29gaRqiA05F6bDgmT+yke5jbXEfaqcrXqz3a7TN6Uy5/7k6c+uCQLvTVwODA1jAcv9fJypBQqRCOIlUHiTJOM57fLCy+Ts4XIzUtQxFb56fjvPqW1CBNQ2xUhoFP6PyAYkH+yj+d7ah1hrPKBBeVE7jrIN2V6dnWvT8ShQE=
 before_script:
-- node_version="node$(awk -F '[=.]' '/ENV NODE_VERSION/ {print $2}' Dockerfile)"
-- base_version="$(awk -F '[ :]' '/FROM/ {print $3}' Dockerfile)"
+- node_version="node$(awk -F '[=.]' '/ARG NODE_VERSION/ {print $2}' Dockerfile)"
+- ruby_version="ruby$(awk -F '[=]' '/ARG RUBY_VERSION/ {print $2}' Dockerfile)"
+- centos_version="centos$(awk -F '[=]' '/ARG CENTOS_VERSION/ {print $2}' Dockerfile)"
 script:
 - docker build -t "$IMAGE_NAME" .
 after_script:
@@ -18,10 +19,10 @@ before_deploy:
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
 - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${node_version}"
-- docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${node_version}-${base_version}"
+- docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${node_version}-${centos_version}"
+- docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${node_version}-${ruby_version}-${centos_version}"
 deploy:
   provider: script
-  script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${node_version}"
-    && docker push "${IMAGE_NAME}:${node_version}-${base_version}"
+  script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${node_version}" && docker push "${IMAGE_NAME}:${node_version}-${ruby_version}-${centos_version}" && docker push "${IMAGE_NAME}:${node_version}-${centos_version}"
   on:
     branch: master
