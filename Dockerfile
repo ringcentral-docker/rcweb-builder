@@ -3,7 +3,7 @@ LABEL maintainer="john.lin@ringcentral.com"
 
 ENV DEV_MODE=true
 ENV NODE_VERSION=8.x
-ENV RUBY_VERSION=2.6.0
+ENV RUBY_VERSION=2.6
 
 #======================================
 # Install Dependent and Nodejs
@@ -42,19 +42,17 @@ RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
 RUN /bin/bash -l -c "gem install bundler"
 RUN /bin/bash -l -c "gem install compass"
 
-ENV GEM_PATH="/usr/local/rvm/gems/ruby-${RUBY_VERSION}/bin"
-ENV RUBY_PATH="/usr/local/rvm/rubies/ruby-${RUBY_VERSION}/bin"
-ENV RVM_PATH="/usr/local/rvm/bin"
-
-ENV PATH="$RUBY_PATH:$RVM_PATH:$GEM_PATH:$PATH"
 #======================================
 # Show Version
 #======================================
-RUN node --version
-RUN yarn --version
-RUN compass version
-RUN grunt --version
-RUN ruby --version
-RUN rvm --version
-RUN bundle --version
-RUN gem --version
+RUN /bin/bash -l -c "node --version"
+RUN /bin/bash -l -c "npm version"
+RUN /bin/bash -l -c "yarn --version"
+RUN /bin/bash -l -c "compass version"
+RUN /bin/bash -l -c "grunt --version"
+RUN /bin/bash -l -c "ruby --version"
+RUN /bin/bash -l -c "rvm --version"
+RUN /bin/bash -l -c "bundle --version"
+RUN /bin/bash -l -c "gem --version"
+
+CMD ["/bin/bash", "-l", "-c"]
