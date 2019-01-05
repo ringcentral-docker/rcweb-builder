@@ -1,6 +1,6 @@
 ARG RUBY_PATH=/usr/local
 ARG RUBY_VERSION=2.6.0
-ARG NODE_VERSION=8.x
+ARG NODE_VERSION=10.x
 ARG CENTOS_VERSION=7
 
 #======================================
