@@ -5,6 +5,10 @@ ENV DEV_MODE=true
 ENV NODE_VERSION=8.x
 ENV RUBY_VERSION=2.6
 
+# Vertica requires bash as default shell
+ENV SHELL "/bin/bash"
+
+RUN chsh -s "${SHELL}"
 #======================================
 # Install Dependent and Nodejs
 #======================================
