@@ -50,7 +50,7 @@ ENV PATH="$RUBY_PATH:$RVM_PATH:$GEM_PATH:$PATH"
 #======================================
 # Show Version
 #======================================
-RUN node --Version
+RUN node --version
 RUN yarn --version
 RUN compass version
 RUN grunt --version
