@@ -36,16 +36,16 @@ RUN yum makecache \
   && npm cache verify \
   && yum clean all
 
-RUN ls /usr/local/rvm/bin
-
 ENV PATH="/usr/local/rvm/bin:$PATH"
 
-RUN rvm requirements
-RUN rvm install ${RUBY_VERSION}
-RUN rvm use ${RUBY_VERSION} --default
-RUN gem install bundler
-RUN gem install compass
+RUN /bin/bash -l -c "rvm requirements"
+RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
+RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
+RUN /bin/bash -l -c "gem install bundler"
+RUN /bin/bash -l -c "gem install compass"
 
+RUN ls -la /usr/local/rvm/bin
+RUN ls -la /usr/local/
 #======================================
 # Show Version
 #======================================
