@@ -48,7 +48,7 @@ RUN /bin/bash -l -c "gem install compass"
 RUN node --version \
     && npm version \
     && yarn --version \
-    && compass version \
+#    && compass version \
     && grunt version \
     && ruby --version \
     && rvm --version \
