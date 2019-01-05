@@ -2,7 +2,7 @@ FROM centos:centos7
 LABEL maintainer="john.lin@ringcentral.com"
 
 ENV DEV_MODE=true
-ENV NODE_VERSION=8.x
+ENV NODE_VERSION=10.x
 ENV RUBY_VERSION=2.6
 
 #======================================
