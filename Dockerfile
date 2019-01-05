@@ -31,8 +31,9 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
   && yum makecache \
   && yum update -y \
   && yum install -y \
-    nodejs gcc-c++ make wget unzip git ant rpm-build yarn \
+    nodejs gcc-c++ make wget bzip2 unzip git ant rpm-build yarn ruby-devel \
   && yum groupinstall "Development Tools" -y \
+  && yum install openssl-devel readline-devel zlib-devel -y \
   && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
   && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
   && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
@@ -58,7 +59,7 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 # RUN /bin/bash -l -c "rvm requirements"
 #RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
 #RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
-RUN gem update --system
+RUN gem install bundler
 RUN gem install compass
 
 #======================================
