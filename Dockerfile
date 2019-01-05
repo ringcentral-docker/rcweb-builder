@@ -3,7 +3,7 @@ LABEL maintainer="john.lin@ringcentral.com"
 
 ENV DEV_MODE=true
 ENV NODE_VERSION=8.x
-ENV RUBY_VERSION=2.6
+ENV RUBY_VERSION=2.6.0
 
 #======================================
 # Install Dependent and Nodejs
@@ -36,16 +36,17 @@ RUN yum makecache \
   && npm cache verify \
   && yum clean all
 
-ENV PATH="/usr/local/rvm/bin:$PATH"
-
 RUN /bin/bash -l -c "rvm requirements"
 RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
 RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
 RUN /bin/bash -l -c "gem install bundler"
 RUN /bin/bash -l -c "gem install compass"
 
-RUN ls -la /usr/local/rvm/bin
-RUN ls -la /usr/local/
+ENV GEM_PATH="/usr/local/rvm/gems/ruby-${RUBY_VERSION}/bin"
+ENV RUBY_PATH="/usr/local/rvm/rubies/ruby-${RUBY_VERSION}/bin"
+ENV RVM_PATH="/usr/local/rvm/bin"
+
+ENV PATH="$RUBY_PATH:$RVM_PATH:$GEM_PATH:$PATH"
 #======================================
 # Show Version
 #======================================
