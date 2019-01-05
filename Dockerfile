@@ -4,12 +4,6 @@ LABEL maintainer="john.lin@ringcentral.com"
 ENV DEV_MODE=true
 ENV NODE_VERSION=8.x
 ENV RUBY_VERSION=2.6
-ENV SHELL="/bin/bash"
-
-#======================================
-# Set bash as default shell
-#======================================
-RUN ["${SHELL}", "-c", "cmd"]
 
 #======================================
 # Install Dependent and Nodejs
@@ -42,21 +36,21 @@ RUN yum makecache \
   && npm cache verify \
   && yum clean all
 
-RUN rvm requirements
-RUN rvm install "${RUBY_VERSION}"
-RUN rvm use "${RUBY_VERSION}" --default
-RUN gem install bundler
-RUN gem install compass
+RUN /bin/bash -l -c "rvm requirements"
+RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
+RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
+RUN /bin/bash -l -c "gem install bundler"
+RUN /bin/bash -l -c "gem install compass"
 
 #======================================
 # Show Version
 #======================================
-RUN node --version \
-    && npm version \
-    && yarn --version \
-    && compass --version \
-    && grunt --version \
-    && ruby --version \
-    && rvm --version \
-    && bundle --version \
-    && gem --version
+RUN /bin/bash -l -c "node --version"
+RUN /bin/bash -l -c "npm version"
+RUN /bin/bash -l -c "yarn --version"
+RUN /bin/bash -l -c "compass version"
+RUN /bin/bash -l -c "grunt version"
+RUN /bin/bash -l -c "ruby --version"
+RUN /bin/bash -l -c "rvm --version"
+RUN /bin/bash -l -c "bundle --version"
+RUN /bin/bash -l -c "gem --version"
