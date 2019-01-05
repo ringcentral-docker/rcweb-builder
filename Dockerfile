@@ -1,7 +1,9 @@
 ARG RUBY_PATH=/usr/local
 ARG RUBY_VERSION=2.6.0
 ARG NODE_VERSION=8.x
-
+#======================================
+# build Ruby
+#======================================
 FROM centos:centos7 AS rubybuild
 ARG RUBY_PATH
 ARG RUBY_VERSION
@@ -31,45 +33,36 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
   && yum makecache \
   && yum update -y \
   && yum install -y \
-    nodejs gcc-c++ make wget bzip2 unzip git ant rpm-build yarn ruby-devel \
+    nodejs wget pbzip2 unzip git ant rpm-build yarn \
   && yum groupinstall "Development Tools" -y \
   && yum install openssl-devel readline-devel zlib-devel -y \
-  && npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
-  && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
-  && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
-  && npm config set registry https://registry.npm.taobao.org  \
+  && alias tar='tar --use-compress-program=pbzip2' \
   && npm install -g grunt-cli \
   && npm cache verify \
   && yum clean all
 
 #======================================
-# Install Dependent Ruby
+# Install bundler & compass
 #======================================
-# RUN yum makecache \
-#   && yum update -y \
-#   && yum install -y \
-#     which patch readline readline-devel zlib zlib-devel \
-#     libyaml-devel libffi-devel openssl-devel bzip2 autoconf \
-#     automake libtool bison iconv-devel sqlite-devel \
-#   && gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
-#   && curl -sSL https://get.rvm.io | bash -s stable \
-#   && npm cache verify \
-#   && yum clean all
+RUN gem install bundler \
+  && gem install compass
 
-# RUN /bin/bash -l -c "rvm requirements"
-#RUN /bin/bash -l -c "rvm install ${RUBY_VERSION}"
-#RUN /bin/bash -l -c "rvm use ${RUBY_VERSION} --default"
-RUN gem install bundler
-RUN gem install compass
+#======================================
+# Set npm mirror
+#======================================
+RUN npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
+  && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
+  && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
+  && npm config set registry https://registry.npm.taobao.org
 
 #======================================
 # Show Version
 #======================================
-RUN node --version
-RUN npm version
-RUN yarn --version
-RUN compass version
-RUN grunt --version
-RUN ruby --version
-RUN bundle --version
-RUN gem --version
+RUN node --version \
+    && npm version \
+    && yarn --version \
+    && compass version \
+    && grunt --version \
+    && ruby --version \
+    && bundle --version \
+    && gem --version
