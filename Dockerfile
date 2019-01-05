@@ -9,6 +9,7 @@ RUN yum makecache \
   && yum update -y \
   && yum install -y \
     git bzip2 \
+  && yum groupinstall "Development Tools" -y \
   && yum clean all
 RUN git clone https://github.com/rbenv/ruby-build.git $RUBY_PATH/plugins/ruby-build \
 &&  $RUBY_PATH/plugins/ruby-build/install.sh
