@@ -41,7 +41,7 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
   && yum makecache \
   && yum update -y \
   && yum install -y \
-    nodejs wget pbzip2 unzip git ant rpm-build yarn java java-devel subversion sshpass\
+    nodejs wget pbzip2 unzip git ant rpm-build yarn java java-devel subversion sshpass mercurial\
   && yum groupinstall "Development Tools" -y \
   && yum install openssl-devel readline-devel zlib-devel -y \
   && alias tar='tar --use-compress-program=pbzip2' \
