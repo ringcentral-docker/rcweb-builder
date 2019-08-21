@@ -30,6 +30,7 @@ ARG GRADLE_VERSION
 ARG GRADLE_DOWNLOAD_SHA256
 ENV PATH $GRADLE_HOME/bin:$RUBY_PATH/bin:$PATH
 ENV DEV_MODE=true
+ENV JAVA_HOME=/usr/lib/jvm/java
 COPY --from=rubybuild $RUBY_PATH $RUBY_PATH
 
 #======================================
