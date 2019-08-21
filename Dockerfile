@@ -2,7 +2,9 @@ ARG RUBY_PATH=/usr/local
 ARG RUBY_VERSION=2.6.0
 ARG NODE_VERSION=10.x
 ARG CENTOS_VERSION=7
-
+ARG GRADLE_VERSION=5.5.1
+ARG GRADLE_HOME=/opt/gradle
+ARG GRADLE_DOWNLOAD_SHA256=222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00
 #======================================
 # build Ruby
 #======================================
@@ -23,7 +25,10 @@ FROM centos:7
 LABEL maintainer="john.lin@ringcentral.com"
 ARG RUBY_PATH
 ARG NODE_VERSION
-ENV PATH $RUBY_PATH/bin:$PATH
+ARG GRADLE_HOME
+ARG GRADLE_VERSION
+ARG GRADLE_DOWNLOAD_SHA256
+ENV PATH $GRADLE_HOME/bin:$RUBY_PATH/bin:$PATH
 ENV DEV_MODE=true
 COPY --from=rubybuild $RUBY_PATH $RUBY_PATH
 
@@ -49,6 +54,23 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 RUN gem install bundler \
   && gem install compass
 
+
+#======================================
+# Install gradle
+#======================================
+RUN set -o errexit -o nounset \
+	&& echo "Downloading Gradle" \
+	&& wget --no-verbose --output-document=gradle.zip "https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+	\
+	&& echo "Checking download hash" \
+	&& echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum -c - \
+	\
+	&& echo "Installing Gradle" \
+	&& unzip gradle.zip \
+	&& rm gradle.zip \
+	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
+	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle
+  
 #======================================
 # Set npm mirror
 #======================================
@@ -67,4 +89,5 @@ RUN node --version \
     && grunt --version \
     && ruby --version \
     && bundle --version \
-    && gem --version
+    && gem --version \
+    && gradle --version
