@@ -81,6 +81,15 @@ RUN npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
   && npm config set registry https://registry.npm.taobao.org
 
 #======================================
+# install sonar-scanner
+#======================================
+RUN curl -s -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.1.0.1829-linux.zip -o sonar.zip && \
+    unzip -qq sonar.zip && \
+    rm sonar.zip && \
+    ln -s /opt/sonar-scanner-4.1.0.1829-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner && \
+    sonar-scanner --version
+
+#======================================
 # Show Version
 #======================================
 RUN node --version \
