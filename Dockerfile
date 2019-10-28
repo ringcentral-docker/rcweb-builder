@@ -3,6 +3,7 @@ ARG RUBY_VERSION=2.6.0
 ARG NODE_VERSION=10.x
 ARG CENTOS_VERSION=7
 ARG GRADLE_VERSION=5.5.1
+ARG SONAR_VERSION=4.1.0.1829
 ARG GRADLE_HOME=/opt/gradle
 ARG GRADLE_DOWNLOAD_SHA256=222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00
 #======================================
@@ -26,9 +27,10 @@ LABEL maintainer="john.lin@ringcentral.com"
 ARG RUBY_PATH
 ARG NODE_VERSION
 ARG GRADLE_HOME
+ARG SONAR_VERSION
 ARG GRADLE_VERSION
 ARG GRADLE_DOWNLOAD_SHA256
-ENV PATH $GRADLE_HOME/bin:$RUBY_PATH/bin:$PATH
+ENV PATH $GRADLE_HOME/bin:$RUBY_PATH/bin:/opt/sonar-scanner-$SONAR_VERSION-linux/bin:$PATH
 ENV DEV_MODE=true
 ENV JAVA_HOME=/usr/lib/jvm/java
 COPY --from=rubybuild $RUBY_PATH $RUBY_PATH
@@ -83,10 +85,9 @@ RUN npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
 #======================================
 # install sonar-scanner
 #======================================
-RUN curl -s -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.1.0.1829-linux.zip -o sonar.zip && \
+RUN curl -s -L "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${GRADLE_VERSION}-linux.zip" -o sonar.zip && \
     unzip -qq sonar.zip && \
     rm sonar.zip && \
-    ln -s /opt/sonar-scanner-4.1.0.1829-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner && \
     sonar-scanner --version
 
 #======================================
