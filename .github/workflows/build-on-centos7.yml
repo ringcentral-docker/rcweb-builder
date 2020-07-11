@@ -1,0 +1,38 @@
+name: Build on CentOS 7
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      # '*' matches any character except '/'
+      - 'centos7/*'
+      - '.github/workflows/*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Docker login
+      env:
+        USER_NAME: ${{ secrets.USER_NAME }}  
+        PASSWORD: ${{ secrets.PASSWORD }}
+      run: |
+        echo $PASSWORD | docker login --username $USER_NAME --password-stdin
+
+    - name: Build & Push Docker Image
+      run: |  
+        cd centos7
+        IMAGE_NAME=ringcentral-docker/rcweb-builder
+        NODE_VERSION="node$(awk -F '[=.]' '/ARG NODE_VERSION/ {print $2}' Dockerfile)"
+        RUBY_VERSION="ruby$(awk -F '[=]' '/ARG RUBY_VERSION/ {print $2}' Dockerfile)"
+        CENTOS_VERSION="centos$(awk -F '[=]' '/ARG CENTOS_VERSION/ {print $2}' Dockerfile)"
+        docker build --tag ${IMAGE_NAME} --file Dockerfile .
+        docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+        docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${NODE_VERSION}"
+        docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${NODE_VERSION}-${CENTOS_VERSION}"
+        docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${NODE_VERSION}-${RUBY_VERSION}-${CENTOS_VERSION}"
+        docker push "${IMAGE_NAME}:latest"
+        docker push "${IMAGE_NAME}:${NODE_VERSION}"
+        docker push "${IMAGE_NAME}:${NODE_VERSION}-${CENTOS_VERSION}"
+        docker push "${IMAGE_NAME}:${NODE_VERSION}-${RUBY_VERSION}-${CENTOS_VERSION}"

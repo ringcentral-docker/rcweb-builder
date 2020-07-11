@@ -1,14 +1,14 @@
 ARG RUBY_PATH=/usr/local
 ARG RUBY_VERSION=2.6.0
-ARG NODE_VERSION=12.x
-ARG CENTOS_VERSION=7
-ARG GRADLE_VERSION=5.5.1
+ARG NODE_VERSION=14.x
+ARG CENTOS_VERSION=8
+ARG GRADLE_VERSION=6.5.1
 ARG GRADLE_HOME=/opt/gradle
-ARG GRADLE_DOWNLOAD_SHA256=222a03fcf2fcaf3691767ce9549f78ebd4a77e73f9e23a396899fb70b420cd00
+ARG GRADLE_DOWNLOAD_SHA256=50a7d30529fa939721fe9268a0205142f3f2302bcac5fb45b27a3902e58db54a
 #======================================
 # build Ruby
 #======================================
-FROM centos:7 AS rubybuild
+FROM centos:8 AS rubybuild
 ARG RUBY_PATH
 ARG RUBY_VERSION
 RUN yum makecache \
@@ -21,7 +21,7 @@ RUN git clone https://github.com/rbenv/ruby-build.git $RUBY_PATH/plugins/ruby-bu
 &&  $RUBY_PATH/plugins/ruby-build/install.sh
 RUN ruby-build $RUBY_VERSION $RUBY_PATH
 
-FROM centos:7
+FROM centos:8
 LABEL maintainer="john.lin@ringcentral.com"
 ARG RUBY_PATH
 ARG NODE_VERSION
@@ -54,7 +54,6 @@ RUN curl --silent --location "https://rpm.nodesource.com/setup_${NODE_VERSION}" 
 #======================================
 RUN gem install bundler \
   && gem install compass
-
 
 #======================================
 # Install gradle
