@@ -23,7 +23,7 @@ jobs:
     - name: Build & Push Docker Image
       run: |  
         cd centos7
-        IMAGE_NAME=ringcentral-docker/rcweb-builder
+        IMAGE_NAME=ringcentral/rcweb-builder
         NODE_VERSION="node$(awk -F '[=.]' '/ARG NODE_VERSION/ {print $2}' Dockerfile)"
         RUBY_VERSION="ruby$(awk -F '[=]' '/ARG RUBY_VERSION/ {print $2}' Dockerfile)"
         CENTOS_VERSION="centos$(awk -F '[=]' '/ARG CENTOS_VERSION/ {print $2}' Dockerfile)"
