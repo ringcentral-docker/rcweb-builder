@@ -74,10 +74,10 @@ RUN set -o errexit -o nounset \
 #======================================
 # Set npm mirror
 #======================================
-RUN npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
-  && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
-  && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
-  && npm config set registry https://registry.npm.taobao.org
+#RUN npm config set electron_mirror https://npm.taobao.org/mirrors/electron  \
+#  && npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass  \
+#  && npm config set phantomjs_cdnurl https://npm.taobao.org/mirrors/phantomjs  \
+#  && npm config set registry https://registry.npm.taobao.org
 
 #======================================
 # Show Version
